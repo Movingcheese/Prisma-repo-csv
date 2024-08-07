@@ -38,7 +38,9 @@ def get_repos_from_prisma_cloud(api_url, jwt_token):
     try:
         response = requests.get(endpoint, headers=headers, verify=ssl.CERT_NONE)
         response.raise_for_status()
-        return response.json()
+        all_repos = response.json()
+        github_enterprise_repos = [repo for repo in all_repos if repo.get('source') == 'githubEnterprise']
+        return github_enterprise_repos
     except Exception as e:
         print(f"Error: {str(e)}")
         return None
